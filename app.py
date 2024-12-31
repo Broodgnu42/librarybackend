@@ -34,8 +34,20 @@ def get_books():
     conn.close()
     return jsonify([dict(book) for book in books])
 
-@app.route('/books', methods=['POST'])
+@app.route('/books', methods=['POST', 'OPTIONS'])
 def add_book():
+    if request.method == 'OPTIONS':
+        response = jsonify({})
+        response.status_code = 200
+        response.headers['Access-Control-Allow-Origin'] = '*'  # Or specify a domain
+        response.headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        return response
+
+    if request.method == 'POST':
+        data = request.json
+        print('Received data:', data)
+        return jsonify({'message': 'Book added successfully'}), 201
     data = request.json
     conn = get_db_connection()
     conn.execute(
