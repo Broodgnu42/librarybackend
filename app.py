@@ -20,7 +20,12 @@ def init_db():
             title TEXT NOT NULL,
             author TEXT NOT NULL,
             genre TEXT,
-            published_year INTEGER
+            published_year INTEGER,
+            kstatus TEXT,
+            krates REAL,
+            jstatus TEXT,
+            jrates REAL,
+            notes TEXT
         )
     ''')
     conn.commit()
@@ -50,8 +55,8 @@ def add_book():
         data = request.json
         conn = get_db_connection()
         conn.execute(
-            'INSERT INTO books (title, author, genre, published_year) VALUES (?, ?, ?, ?)',
-            (data['title'], data['author'], data.get('genre'), data.get('published_year'))
+            'INSERT INTO books (title, author, genre, published_year, kstatus, krates, jstatus, jrates, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            (data['title'], data['author'], data.get('genre'), data.get('published_year'), data.get('kstatus'), data.get('krates'), data.get('jstatus'), data.get('jrates'), data.get('notes'))
         )
         conn.commit()
         conn.close()
@@ -62,8 +67,8 @@ def update_book(id):
     data = request.json
     conn = get_db_connection()
     conn.execute(
-        'UPDATE books SET title = ?, author = ?, genre = ?, published_year = ? WHERE id = ?',
-        (data['title'], data['author'], data.get('genre'), data.get('published_year'), id)
+        'UPDATE books SET title = ?, author = ?, genre = ?, published_year = ?, kstatus = ?, krates = ?, jstatus = ?, jrates = ?, notes = ? WHERE id = ?',
+        (data['title'], data['author'], data.get('genre'), data.get('published_year'), data.get('kstatus'), data.get('krates'), data.get('jstatus'), data.get('jrates'), data.get('notes'), id)
     )
     conn.commit()
     conn.close()
