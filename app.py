@@ -39,6 +39,27 @@ def get_books():
     conn.close()
     return jsonify([dict(book) for book in books])
 
+@app.route('/books/<int:id>', methods=['GET'])
+def get_book(id):
+    conn = get_db_connection()
+    book = conn.execute('SELECT * FROM books WHERE id = ?', (id,)).fetchone()
+    conn.close()
+    if book:
+        return jsonify({
+            'title': book['title'],
+            'author': book['author'],
+            'genre': book['genre'],
+            'published_year': book['published_year'],
+            'kstatus': book['kstatus'],
+            'krates': book['krates'],
+            'jstatus': book['jstatus'],
+            'jrates': book['jrates'],
+            'notes': book['notes']
+        })
+    else:
+        return jsonify({'message': 'Book not found'}), 404
+
+
 @app.route('/books', methods=['POST', 'OPTIONS'])
 def add_book():
     if request.method == 'OPTIONS':
