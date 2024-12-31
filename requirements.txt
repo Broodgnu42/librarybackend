@@ -1,0 +1,3 @@
+Flask
+SQLite3
+gunicorn
