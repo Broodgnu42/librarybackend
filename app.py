@@ -21,6 +21,7 @@ def init_db():
             author TEXT NOT NULL,
             genre TEXT,
             published_year INTEGER,
+            location TEXT,
             kstatus TEXT,
             krates REAL,
             jstatus TEXT,
@@ -50,6 +51,7 @@ def get_book(id):
             'author': book['author'],
             'genre': book['genre'],
             'published_year': book['published_year'],
+            'location': book['location'],
             'kstatus': book['kstatus'],
             'krates': book['krates'],
             'jstatus': book['jstatus'],
@@ -75,8 +77,8 @@ def add_book():
         print('Received data:', data)
         conn = get_db_connection()
         conn.execute(
-            'INSERT INTO books (title, author, genre, published_year, kstatus, krates, jstatus, jrates, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            (data['title'], data['author'], data.get('genre'), data.get('published_year'), data.get('kstatus'), data.get('krates'), data.get('jstatus'), data.get('jrates'), data.get('notes'))
+            'INSERT INTO books (title, author, genre, published_year, location, kstatus, krates, jstatus, jrates, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            (data['title'], data['author'], data.get('genre'), data.get('published_year'), data.get('location'), data.get('kstatus'), data.get('krates'), data.get('jstatus'), data.get('jrates'), data.get('notes'))
         )
         conn.commit()
         conn.close()
@@ -87,8 +89,8 @@ def update_book(id):
     data = request.json
     conn = get_db_connection()
     conn.execute(
-        'UPDATE books SET title = ?, author = ?, genre = ?, published_year = ?, kstatus = ?, krates = ?, jstatus = ?, jrates = ?, notes = ? WHERE id = ?',
-        (data['title'], data['author'], data.get('genre'), data.get('published_year'), data.get('kstatus'), data.get('krates'), data.get('jstatus'), data.get('jrates'), data.get('notes'), id)
+        'UPDATE books SET title = ?, author = ?, genre = ?, published_year = ?, location = ?, kstatus = ?, krates = ?, jstatus = ?, jrates = ?, notes = ? WHERE id = ?',
+        (data['title'], data['author'], data.get('genre'), data.get('published_year'), data.get('location'), data.get('kstatus'), data.get('krates'), data.get('jstatus'), data.get('jrates'), data.get('notes'), id)
     )
     conn.commit()
     conn.close()
