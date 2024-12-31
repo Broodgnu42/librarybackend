@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 import sqlite3
 from flask_cors import CORS
 
@@ -76,6 +76,10 @@ def delete_book(id):
     conn.commit()
     conn.close()
     return jsonify({'message': 'Book deleted successfully!'})
+    
+@app.route('/download-db')
+def download_db():
+    return send_file('library.db', as_attachment=True)
 
 if __name__ == '__main__':
     init_db()
