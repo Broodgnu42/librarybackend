@@ -47,16 +47,15 @@ def add_book():
     if request.method == 'POST':
         data = request.json
         print('Received data:', data)
+        data = request.json
+        conn = get_db_connection()
+        conn.execute(
+            'INSERT INTO books (title, author, genre, published_year) VALUES (?, ?, ?, ?)',
+            (data['title'], data['author'], data.get('genre'), data.get('published_year'))
+        )
+        conn.commit()
+        conn.close()
         return jsonify({'message': 'Book added successfully'}), 201
-    data = request.json
-    conn = get_db_connection()
-    conn.execute(
-        'INSERT INTO books (title, author, genre, published_year) VALUES (?, ?, ?, ?)',
-        (data['title'], data['author'], data.get('genre'), data.get('published_year'))
-    )
-    conn.commit()
-    conn.close()
-    return jsonify({'message': 'Book added successfully!'}), 201
 
 @app.route('/books/<int:id>', methods=['PUT'])
 def update_book(id):
