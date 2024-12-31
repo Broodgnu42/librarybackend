@@ -73,7 +73,6 @@ def add_book():
     if request.method == 'POST':
         data = request.json
         print('Received data:', data)
-        data = request.json
         conn = get_db_connection()
         conn.execute(
             'INSERT INTO books (title, author, genre, published_year, kstatus, krates, jstatus, jrates, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
